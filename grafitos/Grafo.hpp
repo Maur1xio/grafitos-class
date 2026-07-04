@@ -2,30 +2,34 @@
 #define __GRAFO_HPP__
 
 #include <vector>
+#include <string>
+
 using namespace std;
 
-template<class T>
+template<class TVertice, class TArco>
 class CGrafo {
 private:
 	class CArco {
 	public:
-		T info;
-		int v; //indice del vertice de llegada
-		CArco(int vLlegada) {
-			info = T();
+		TArco info; 
+		int v;
+
+		CArco(int vLlegada, TArco peso = TArco()) {
+			info = peso;
 			v = vLlegada;
 		}
 	};
+
 	class CVertice {
 	public:
-		T info;
-		vector<CArco*>* ady; //Lista de adyacencia
+		TVertice info;
+		vector<CArco*>* ady;
+
 		CVertice() {
-			info = T();
+			info = TVertice();
 			ady = new vector<CArco*>();
 		}
 	};
-	//Lista de vértices
 	vector<CVertice*>* vertices;
 
 public:
@@ -33,8 +37,7 @@ public:
 		vertices = new vector<CVertice*>();
 	}
 
-	//Operaciones del Grafo
-	int adicionarVertice(T info) {
+	int adicionarVertice(TVertice info) {
 		CVertice* vert = new CVertice();
 		vert->info = info;
 		vertices->push_back(vert);
@@ -45,16 +48,23 @@ public:
 		return vertices->size();
 	}
 
-	T obtenerVertice(int v) {
+	TVertice obtenerVertice(int v) {
 		return (vertices->at(v))->info;
 	}
-	void modificarVertice(int v, T info) {
+
+	void modificarVertice(int v, TVertice info) {
 		(vertices->at(v))->info = info;
 	}
-	//Operaciones del arco
+
+	int adicionarArco(int v, int vLlegada, TArco peso) {
+		CVertice* ver = vertices->at(v);
+		CArco* arc = new CArco(vLlegada, peso);
+		ver->ady->push_back(arc);
+		return ver->ady->size() - 1;
+	}
+
 	int adicionarArco(int v, int vLlegada) {
 		CVertice* ver = vertices->at(v);
-		//Crear el objeto ARCO
 		CArco* arc = new CArco(vLlegada);
 		ver->ady->push_back(arc);
 		return ver->ady->size() - 1;
@@ -64,24 +74,22 @@ public:
 		return (vertices->at(v))->ady->size();
 	}
 
-	T obtenerArco(int v, int apos) {
+	TArco obtenerArco(int v, int apos) {
 		CVertice* ver = vertices->at(v);
 		return (ver->ady->at(apos))->info;
 	}
 
-	void modificarArco(int v, int apos, T info) {
+	void modificarArco(int v, int apos, TArco info) {
 		CVertice* ver = vertices->at(v);
 		(ver->ady->at(apos))->info = info;
 	}
 
-	T obtenerVerticeLlegada(int v, int apos) {
+	TVertice obtenerVerticeLlegada(int v, int apos) {
 		CVertice* ver = vertices->at(v);
 		int vi = (ver->ady->at(apos))->v;
 		CVertice* ver2 = vertices->at(vi);
-		return ver2->info; //indice del vertice de llegada
+		return ver2->info;
 	}
-
 };
 
 #endif // !__GRAFO_HPP__
-

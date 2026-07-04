@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="grafitos/grafitos.vcxproj" />
+  <Project Path="grafitos/grafitos.vcxproj" Id="8fd4bd62-22db-478c-bd43-adcb4baae772" />
 </Solution>
